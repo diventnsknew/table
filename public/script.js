@@ -97,6 +97,15 @@ const api = {
             const res = await fetch('/api/reports');
             state.history = await res.json();
         } catch (e) { console.error(e); }
+    },
+    syncReports: async (reports) => {
+        try {
+            await fetch('/api/reports/sync', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(reports)
+            });
+        } catch (e) { console.error(e); }
     }
 };
 
@@ -612,20 +621,17 @@ window.submitReport = async () => {
     }
 
     try {
-        // Send to server (server will handle Telegram notification)
         await fetch('/api/reports', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(finalPayload)
         });
         await api.fetchReports(); // Refresh
-
         alert('Сохранено!');
         state.editingId = null;
         navigate('dashboard');
     } catch(e) {
         alert('Ошибка');
-        console.error('Submit error:', e);
     } finally {
         state.isSubmitting = false;
         render();
