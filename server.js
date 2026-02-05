@@ -49,10 +49,8 @@ app.get('/api/reports', (req, res) => {
 async function sendToTelegram(reportData) {
     try {
         // Format message for Telegram
-        let message = `📊 <b>Новый отчет от ${reportData.user_info?.fullName || 'Неизвестный'}</b>\n\n`;
+        let message = `📊 <b>Новый отчет от ${reportData.department}</b>\n\n`;
         message += `🏢 Отдел: ${reportData.department}\n`;
-        message += `💼 Должность: ${reportData.user_info?.position || 'Не указана'}\n`;
-        message += `📞 Контакт: ${reportData.user_info?.contact || 'Не указан'}\n`;
         message += `📅 Период: ${reportData.period.week_dates}\n`;
         message += `📈 Тип отчета: ${reportData.report_type === 'weekly' ? 'Недельный' : 'Месячный'}\n\n`;
 
